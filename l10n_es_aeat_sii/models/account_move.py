@@ -400,7 +400,7 @@ class AccountMove(models.Model):
         if self.type == 'out_refund' and self.refund_type == 'I':
             taxes_amount = -abs(taxes_amount)
         else:
-            taxes_amount = abs(taxes_amount)
+            taxes_amount = taxes_amount
         if self.type in ['out_invoice', 'out_refund']:
             tax_sii['CuotaRepercutida'] = taxes_amount
         if self.type in ['in_invoice', 'in_refund']:
@@ -437,7 +437,7 @@ class AccountMove(models.Model):
         if self.type == 'out_refund' and self.refund_type == 'I':
             taxes_amount = -abs(taxes_amount)
         else:
-            taxes_amount = abs(taxes_amount)
+            taxes_amount = taxes_amount
         if self.type in ['out_invoice', 'out_refund']:
             tax_sii[str(tax_type)]['CuotaRepercutida'] += taxes_amount
         if self.type in ['in_invoice', 'in_refund']:
@@ -677,20 +677,12 @@ class AccountMove(models.Model):
                                 line.tax_ids)
         if len(taxes_f) > 0:
             for key, line in list(taxes_f.items()):
-                if self.type == 'out_refund' and self.refund_type == 'I':
-                    if line.get('CuotaRecargoEquivalencia', False):
-                        line['CuotaRecargoEquivalencia'] = \
-                            -round(line['CuotaRecargoEquivalencia'], 2)
-                    if line.get('CuotaRepercutida', False):
-                        line['CuotaRepercutida'] = \
-                            -round(line['CuotaRepercutida'], 2)
-                else:
-                    if line.get('CuotaRecargoEquivalencia', False):
-                        line['CuotaRecargoEquivalencia'] = \
-                            round(line['CuotaRecargoEquivalencia'], 2)
-                    if line.get('CuotaRepercutida', False):
-                        line['CuotaRepercutida'] = \
-                            abs(round(line['CuotaRepercutida'], 2))
+                if line.get('CuotaRecargoEquivalencia', False):
+                    line['CuotaRecargoEquivalencia'] = \
+                        round(line['CuotaRecargoEquivalencia'], 2)
+                if line.get('CuotaRepercutida', False):
+                    line['CuotaRepercutida'] = \
+                        round(line['CuotaRepercutida'], 2)
                 line['BaseImponible'] = round(line['BaseImponible'], 2)
                 if line.get('TipoImpositivo', False):
                     line['TipoImpositivo'] = round(line['TipoImpositivo'], 2)
@@ -698,20 +690,12 @@ class AccountMove(models.Model):
                     'DesgloseIVA']['DetalleIVA'].append(line)
         if len(taxes_to) > 0:
             for key, line in list(taxes_to.items()):
-                if self.type == 'out_refund' and self.refund_type == 'I':
-                    if line.get('CuotaRecargoEquivalencia', False):
-                        line['CuotaRecargoEquivalencia'] = \
-                            -round(line['CuotaRecargoEquivalencia'], 2)
-                    if line.get('CuotaRepercutida', False):
-                        line['CuotaRepercutida'] = \
-                            -round(line['CuotaRepercutida'], 2)
-                else:
-                    if line.get('CuotaRecargoEquivalencia', False):
-                        line['CuotaRecargoEquivalencia'] = \
-                            round(line['CuotaRecargoEquivalencia'], 2)
-                    if line.get('CuotaRepercutida', False):
-                        line['CuotaRepercutida'] = \
-                            abs(round(line['CuotaRepercutida'], 2))
+                if line.get('CuotaRecargoEquivalencia', False):
+                    line['CuotaRecargoEquivalencia'] = \
+                        round(line['CuotaRecargoEquivalencia'], 2)
+                if line.get('CuotaRepercutida', False):
+                    line['CuotaRepercutida'] = \
+                        round(line['CuotaRepercutida'], 2)
                 line['BaseImponible'] = round(line['BaseImponible'], 2)
                 taxes_sii['DesgloseTipoOperacion']['PrestacionServicios'][
                     'Sujeta']['NoExenta']['DesgloseIVA'][
